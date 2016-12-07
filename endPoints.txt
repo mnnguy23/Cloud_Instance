@@ -1,16 +1,50 @@
 Available End Points
 
-https://smartlock-jt.herokuapp.com/data/(table name)/(command)
+	>>>>>CHANGE LOCK<<<<<
+https://smartlock-jt.herokuapp.com/lock/:id
+https://smartlock-jt.herokuapp.com/unlock/:id
+	where id = id of the lock
 
-where (table name) = [lock, user, activity_log, virtual_keys]
-where (command) = [all, id, post]
-	where id is the unique id of each table
+	>>>>>LOCK<<<<<
+https://smartlock-jt.herokuapp.com/data/lock/all
+https://smartlock-jt.herokuapp.com/data/lock/(id)
+https://smartlock-jt.herokuapp.com/data/lock/post
+	{"lock_id":1234,"lock_state":true,"lock_name":"test","serial_number":"test serial number","address":"4800 Calhoun, Houston, Texas, 77024","owner":"jacob"}
+https://smartlock-jt.herokuapp.com/data/lock/change/name/(id)
+	{"name":"newName"}
+https://smartlock-jt.herokuapp.com/data/lock/change/name/(id)
+	{"address":"newAddress"}
+https://smartlock-jt.herokuapp.com/data/lock/change/state/(id)
+	{"state":true}
 
-The post requests need to be of the following form
+	>>>>>USER<<<<<
+https://smartlock-jt.herokuapp.com/data/user/all
+https://smartlock-jt.herokuapp.com/data/user/(id)
+https://smartlock-jt.herokuapp.com/data/user/post
+	{"user_id":1,"username":"jacob","password":"123"}
 
-	lock -> {"lock_id":1234,"lock_state":true,"lock_name":"test","serial_number":"test serial number"}
-	user - >{"user_id":1,"username":"jacob","password":"123","is_child":false,"parent_user":null}
-	activity_log -> {"log_id":1234,"acc_sum":"TEST","lock_id":1234,"act_time":"11-23-2016 18:18:41"}
-	virtual_keys -> {"key_id":1234,"lock_id":1234,"user_id":1234,"virtual_key":"test"}
+	>>>>>ACTIVITY_LOG<<<<<
+https://smartlock-jt.herokuapp.com/data/activity_log/all
+https://smartlock-jt.herokuapp.com/data/activity_log/(id)
+https://smartlock-jt.herokuapp.com/data/activity_log/post
+	{"log_id":1234,"acc_sum":"Lock","lock_id":1234,"act_time":"11-23-2016 18:18:41"}
+
+	>>>>>VIRTUAL_KEYS<<<<<
+https://smartlock-jt.herokuapp.com/data/virtual_keys/all
+https://smartlock-jt.herokuapp.com/data/virtual_keys/(id)
+https://smartlock-jt.herokuapp.com/data/virtual_keys/post
+	{"key_id":1234,"lock_id":1234,"user_id":1234,"virtual_key":"test"}
+
+	>>>>>LOCK_USER_AUTH<<<<<
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/all
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/(id)
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/post
+	{"lock_id":1234,"user_id":1234}
+		Both lock and user id have to exist
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/user/(user_id)
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/lock/(lock_id)
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/remove/user/(user_id)
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/remove/lock/(lock_id)
+	
 
 

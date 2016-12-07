@@ -3,7 +3,6 @@ var router = express.Router();
 var client = require("../db");
 var bodyParser = require("body-parser");
 
-//Get all data from registered_users
 router.get('/', function(req, res){
 	res.send("Please add /all, /lock_id, or /post to URL");
 });
@@ -17,9 +16,8 @@ router.get('/all', function(req, res){
 	});
 });
 
-//Get data from registered_users by ID
 router.get('/:lock_id', function(req, res){
-	var id = req.params.lock_id
+	var lock_id = req.params.lock_id;
 	client.query("SELECT * FROM public.lock WHERE lock_id = " + lock_id, function(err, results) {
     if (err) {
       throw err;
@@ -28,21 +26,64 @@ router.get('/:lock_id', function(req, res){
 	});
 });
 
-//Add data to registered_users
 router.post('/post', function(req, res){
 	var lock = req.body;
 	console.log("lock id>>>" + lock.lock_id);
 	console.log("lock state>>>" + lock.lock_state);
 	console.log("lock name>>>" + lock.lock_name);
 	console.log("serial number>>>" + lock.serial_number);
-	client.query("INSERT INTO public.lock VALUES(" + lock.lock_id + ", " + lock.lock_state + ", " + "'" + lock.lock_name + "', '" + lock.serial_number +"')" , function(err, results) {
+  console.log("address>>>" + lock.address);
+  console.log("owner>>>" + lock.owner);
+	client.query("INSERT INTO public.lock VALUES(" + lock.lock_id + ", " + lock.lock_state + ", " + "'" + lock.lock_name + "', '" + lock.serial_number +"', '" + lock.address + "', '" + lock.owner + "')" , function(err, results) {
     if (err) {
       throw err;
     }else{
-    	console.log("lock added successfully........");
-    	res.send("lock added successfully........");
+    	console.log(true);
+    	res.send(true);
     }
 	});
+});
+
+router.post('/change/name/:lock_id', function(req,res){
+  var lock_id = req.params.lock_id;
+  var newName = req.body;
+  client.query("UPDATE public.lock SET lock_name = '" + newName.name + "' WHERE lock_id = " + lock_id, function(err, results) {
+    if (err) {
+      throw err;
+    }else{
+      console.log("new name>>>" + newName.name);
+      console.log(true);
+      res.send(true);
+    }
+  });
+});
+
+router.post('/change/address/:lock_id', function(req,res){
+  var lock_id = req.params.lock_id;
+  var newAddress = req.body;
+  client.query("UPDATE public.lock SET address = '" + newAddress.address + "' WHERE lock_id = " + lock_id, function(err, results) {
+    if (err) {
+      throw err;
+    }else{
+      console.log("new address>>>" + newAddress.address);
+      console.log(true);
+      res.send(true);
+    }
+  });
+});
+
+router.post('/change/state/:lock_id', function(req,res){
+  var lock_id = req.params.lock_id;
+  var newState = req.body;
+  client.query("UPDATE public.lock SET lock_state = '" + newState.state + "' WHERE lock_id = " + lock_id, function(err, results) {
+    if (err) {
+      throw err;
+    }else{
+      console.log("new state>>>" + newState.state);
+      console.log(true);
+      res.send(true);
+    }
+  });
 });
 
 module.exports = router;
