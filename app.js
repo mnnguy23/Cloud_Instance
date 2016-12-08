@@ -22,8 +22,13 @@ app.get('/data', function(req, res){
 	res.send(msg);
 });
 
-app.get('/lock/:id', function(req, res){
-	var useProxy = function(proxy) {
+app.get('/lock/:lock_id', function(req, res){
+	var lock_id = req.params.lock_id;
+	var obj = {
+	    		changed: false,
+	    		lock_state: false
+	    	};
+	var useLockProxy = function(proxy) {
 		var hostname = proxy.split("//")[1];
 		var portnumber = hostname.split(":")[1];
 		var config = {
@@ -33,22 +38,45 @@ app.get('/lock/:id', function(req, res){
     		pass: "raspberry"
 		};
 		var ssh = new SSH(config);
+		
 		ssh.exec('python /home/pi/Desktop/ubi/lock.py', {
 		    out: function(stdout) {
-		        res.send(true);
+		    	obj.changed = true;
+	    		obj.lock_state = true;
+	    		var jsonString = JSON.stringify(obj);
+		        res.send(jsonString);
 		    },
-
-		    err: function(stderr) {
-		    	console.log(stderr);
-		        res.send(stderr); // this-does-not-exist: command not found 
+		    err: function() {
+		    	obj.changed = true;
+	    		obj.lock_state = true;
+	    		var jsonString = JSON.stringify(obj);
+		        res.send(jsonString); 
 		    }
 		}).start();
 	}
-	getProxy(req, res, useProxy);
+	client.query("SELECT * FROM public.lock WHERE lock_id = " + lock_id, function(err, results) {
+	    if(lock_id != 1234){
+    		res.send(false);
+    	}else if (err) {
+	        throw err;
+	    }else if(results.rows[0].lock_state == true){
+	    	obj.changed = false;
+	    	obj.lock_state = results.rows[0].lock_state;
+	    	var jsonString = JSON.stringify(obj);
+			res.send(jsonString);
+	    }else{
+		    getProxy(req, res, useLockProxy);
+	    }
+	});
 });
 
-app.get('/unlock/:id', function(req, res){
-	var useProxy = function(proxy) {
+app.get('/unlock/:lock_id', function(req, res){
+	var lock_id = req.params.lock_id;
+	var obj = {
+	    		changed: false,
+	    		lock_state: false
+	    	};
+	var useUnlockProxy = function(proxy) {
 		var hostname = proxy.split("//")[1];
 		var portnumber = hostname.split(":")[1];
 		var config = {
@@ -60,16 +88,34 @@ app.get('/unlock/:id', function(req, res){
 		var ssh = new SSH(config);
 		ssh.exec('python /home/pi/Desktop/ubi/unlock.py', {
 		    out: function(stdout) {
-		        res.send(true);
+		        obj.changed = true;
+	    		obj.lock_state = false;
+	    		var jsonString = JSON.stringify(obj);
+		        res.send(jsonString); 
 		    },
 
-		    err: function(stderr) {
-		    	console.log(stderr);
-		        res.send(stderr); // this-does-not-exist: command not found 
+		    err: function() {
+		    	obj.changed = true;
+	    		obj.lock_state = false;
+	    		var jsonString = JSON.stringify(obj);
+		        res.send(jsonString); 
 		    }
 		}).start();
 	}
-	getProxy(req, res, useProxy);
+	client.query("SELECT * FROM public.lock WHERE lock_id = " + lock_id, function(err, results) {
+	    if(lock_id != 1234){
+    		res.send(false);
+    	}else if (err) {
+	        throw err;
+	    }else if(results.rows[0].lock_state == false){
+	    	obj.changed = false;
+	    	obj.lock_state = results.rows[0].lock_state;
+	    	var jsonString = JSON.stringify(obj);
+			res.send(jsonString);
+	    }else{
+	    	getProxy(req, res, useUnlockProxy);
+	    }
+	});
 });
 
 var options1 = {

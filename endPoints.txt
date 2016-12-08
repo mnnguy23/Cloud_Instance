@@ -1,50 +1,49 @@
 Available End Points
 
 	>>>>>CHANGE LOCK<<<<<
-https://smartlock-jt.herokuapp.com/lock/:id
-https://smartlock-jt.herokuapp.com/unlock/:id
+https://smartlock-jt.herokuapp.com/lock/:id     GET
+https://smartlock-jt.herokuapp.com/unlock/:id     GET
 	where id = id of the lock
 
 	>>>>>LOCK<<<<<
-https://smartlock-jt.herokuapp.com/data/lock/all
-https://smartlock-jt.herokuapp.com/data/lock/(id)
-https://smartlock-jt.herokuapp.com/data/lock/post
-	{"lock_id":1234,"lock_state":true,"lock_name":"test","serial_number":"test serial number","address":"4800 Calhoun, Houston, Texas, 77024","owner":"jacob"}
-https://smartlock-jt.herokuapp.com/data/lock/change/name/(id)
+https://smartlock-jt.herokuapp.com/data/lock/all     GET
+https://smartlock-jt.herokuapp.com/data/lock/(id)     GET
+https://smartlock-jt.herokuapp.com/data/lock/remove/(id)     GET
+https://smartlock-jt.herokuapp.com/data/lock/post     POST
+	{"lock_id":1234,"lock_state":true,"lock_name":"test","serial_number":"test serial number","address":"4800 Calhoun, Houston, Texas, 77024","owner":1234}
+https://smartlock-jt.herokuapp.com/data/lock/change/name/(id)     POST
 	{"name":"newName"}
-https://smartlock-jt.herokuapp.com/data/lock/change/name/(id)
+https://smartlock-jt.herokuapp.com/data/lock/change/name/(id)     POST
 	{"address":"newAddress"}
-https://smartlock-jt.herokuapp.com/data/lock/change/state/(id)
+https://smartlock-jt.herokuapp.com/data/lock/change/state/(id)     POST
 	{"state":true}
 
 	>>>>>USER<<<<<
-https://smartlock-jt.herokuapp.com/data/user/all
-https://smartlock-jt.herokuapp.com/data/user/(id)
-https://smartlock-jt.herokuapp.com/data/user/post
+https://smartlock-jt.herokuapp.com/data/user/all     GET
+https://smartlock-jt.herokuapp.com/data/user/(id)     GET
+https://smartlock-jt.herokuapp.com/data/user/post     POST
 	{"user_id":1,"username":"jacob","password":"123"}
 
 	>>>>>ACTIVITY_LOG<<<<<
-https://smartlock-jt.herokuapp.com/data/activity_log/all
-https://smartlock-jt.herokuapp.com/data/activity_log/(id)
-https://smartlock-jt.herokuapp.com/data/activity_log/post
+https://smartlock-jt.herokuapp.com/data/activity_log/all     GET
+https://smartlock-jt.herokuapp.com/data/activity_log/(id)     GET
+https://smartlock-jt.herokuapp.com/data/activity_log/post     POST
 	{"log_id":1234,"acc_sum":"Lock","lock_id":1234,"act_time":"11-23-2016 18:18:41"}
 
 	>>>>>VIRTUAL_KEYS<<<<<
-https://smartlock-jt.herokuapp.com/data/virtual_keys/all
-https://smartlock-jt.herokuapp.com/data/virtual_keys/(id)
-https://smartlock-jt.herokuapp.com/data/virtual_keys/post
+https://smartlock-jt.herokuapp.com/data/virtual_keys/all     GET
+https://smartlock-jt.herokuapp.com/data/virtual_keys/(id)     GET
+https://smartlock-jt.herokuapp.com/data/virtual_keys/post     POST
 	{"key_id":1234,"lock_id":1234,"user_id":1234,"virtual_key":"test"}
 
 	>>>>>LOCK_USER_AUTH<<<<<
-https://smartlock-jt.herokuapp.com/data/lock_user_auth/all
-https://smartlock-jt.herokuapp.com/data/lock_user_auth/(id)
-https://smartlock-jt.herokuapp.com/data/lock_user_auth/post
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/all     GET
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/user/(user_id)     GET
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/lock/(lock_id)     GET
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/post     POST
 	{"lock_id":1234,"user_id":1234}
 		Both lock and user id have to exist
-https://smartlock-jt.herokuapp.com/data/lock_user_auth/user/(user_id)
-https://smartlock-jt.herokuapp.com/data/lock_user_auth/lock/(lock_id)
-https://smartlock-jt.herokuapp.com/data/lock_user_auth/remove/user/(user_id)
-https://smartlock-jt.herokuapp.com/data/lock_user_auth/remove/lock/(lock_id)
-	
-
-
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/remove/user/(user_id)     GET
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/remove/lock/(lock_id)     GET
+https://smartlock-jt.herokuapp.com/data/lock_user_auth/remove     POST
+	{"lock_id":1234,"user_id":1234}

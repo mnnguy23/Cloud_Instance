@@ -8,7 +8,7 @@ router.get('/', function(req, res){
 });
 
 router.get('/all', function(req, res){
-	client.query("SELECT * FROM public.activity_log", function(err, results) {
+	client.query("SELECT * FROM public.activity_log ORDER BY act_time", function(err, results) {
     if (err) {
       throw err;
     }

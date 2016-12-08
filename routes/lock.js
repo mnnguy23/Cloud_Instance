@@ -26,6 +26,18 @@ router.get('/:lock_id', function(req, res){
 	});
 });
 
+router.get('/remove/:lock_id', function(req, res){
+  var lock_id = req.params.lock_id;
+  client.query("DELETE FROM public.lock WHERE lock_id = " + lock_id , function(err, results) {
+    if (err) {
+      throw err;
+    }else{
+      console.log(true);
+      res.send(true);
+    }
+  });
+});
+
 router.post('/post', function(req, res){
 	var lock = req.body;
 	console.log("lock id>>>" + lock.lock_id);
